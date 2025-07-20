@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interactive Star Map</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tableau-extension-api@1.10.0/lib/tableau.extensions.1.latest.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: rgb(123, 123, 180);
+      color: #fff;
+      overflow: hidden;
+    }
+
+    #controls {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    svg {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, #000 0%, #001020 80%);
+      border: 1px solid #222;
+    }
+
+    .star {
+      stroke: #fff;
+      stroke-width: 0.5;
+      cursor: pointer;
+    }
+
+    .tooltip {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 4px;
+      pointer-events: none;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    #resetZoom {
+      margin-left: 10px;
+      background: #222;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 4px 8px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .pinned-info {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 10px 14px;
+      border: 1px solid #0f0;
+      border-radius: 6px;
+      font-size: 13px;
+      max-width: 240px;
+      z-index: 10;
+    }
+
+    .pinned-info.hidden {
+      display: none;
+    }
+
+    @keyframes pulse-ring {
+      0% { stroke-width: 2.5; opacity: 1; }
+      50% { stroke-width: 4; opacity: 0.6; }
+      100% { stroke-width: 2.5; opacity: 1; }
+    }
+
+    .star.highlighted {
+      stroke: #0f0;
+      animation: pulse-ring 1.2s infinite ease-in-out;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id="controls">
+    <label>
+      <input type="checkbox" id="filterHab" />
+      Show only habitable systems
+    </label>
+    <button id="resetZoom">Reset Zoom</button>
+  </div>
+
+  <svg></svg>
+  <div class="tooltip"></div>
+  <div class="pinned-info hidden"></div>
+
+  <script src="star-map.js"></script>
+
+  <script>
+    tableau.extensions.initializeAsync().then(() => {
+      console.log('Star Map Extension Initialized');
+      // You can access dashboard data here if needed
+    });
+  </script>
+
+</body>
+</html>
